@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
+import SplitType from 'split-type';
 import { useLang } from '../context/LanguageContext';
 
 const heroImages = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&q=85&w=1600',
-  'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&q=85&w=1600',
+  'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=90&w=2000',
+  'https://images.unsplash.com/photo-1600573472556-e636c2acda88?auto=format&fit=crop&q=90&w=2000',
 ];
 
 const DURATION = 1.2;
@@ -39,54 +40,55 @@ export default function Hero() {
   const isAActive = useRef(true);
   const idxRef = useRef(0);
 
-  // Görsel yükleme helper
+  // Görsel yükleme helper (robust, direct assignment)
   const loadImage = (img: HTMLImageElement | null, src: string) => {
     if (!img) return;
-    const temp = new Image();
-    temp.onload = () => { img.src = src; };
-    temp.src = src;
+    if (img.src === src) return;
+    img.src = src;
   };
 
-  // Slayt fonksiyonu
+  // Slayt fonksiyonu — büyük yukarı kayıp gider (reveal), thumb sabit kalır
   const slide = useCallback(() => {
     if (animatingRef.current) return;
     animatingRef.current = true;
-    
+
     const newIdx = (idxRef.current + 1) % heroImages.length;
-    
+
     const visibleBig = isAActive.current ? bigA.current : bigB.current;
     const hiddenBig = isAActive.current ? bigB.current : bigA.current;
-    const visibleThumb = isAActive.current ? thumbA.current : thumbB.current;
-    const hiddenThumb = isAActive.current ? thumbB.current : thumbA.current;
     const hiddenBigImg = isAActive.current ? bigBImg.current : bigAImg.current;
-    const hiddenThumbImg = isAActive.current ? thumbBImg.current : thumbAImg.current;
-    
-    if (!visibleBig || !hiddenBig || !visibleThumb || !hiddenThumb) {
+    // Thumb sabit kalır — her zaman thumbA görünür, içeriği update edilir
+    const visibleThumbImg = thumbAImg.current;
+
+    if (!visibleBig || !hiddenBig) {
       idxRef.current = newIdx;
       setCounter(newIdx);
       animatingRef.current = false;
       return;
     }
-    
-    // Görseli önceden yükle
+
+    // Hidden big'e thumb'da görünen görseli yükle (yeni büyük = mevcut thumb)
     loadImage(hiddenBigImg, heroImages[newIdx]);
-    loadImage(hiddenThumbImg, heroImages[(newIdx + 1) % heroImages.length]);
-    
-    // GSAP animasyon
+    // Visible thumb'a bir sonraki görseli yükle (sıradaki büyük olacak)
+    loadImage(visibleThumbImg, heroImages[(newIdx + 1) % heroImages.length]);
+
+    // Hidden big'i anında visible big'in tam altına yerleştir
+    gsap.set(hiddenBig, { yPercent: 0 });
+
+    // Sadece visible big yukarı kayıp gider, alttaki yeni big açığa çıkar
     const tl = gsap.timeline({
       onComplete: () => {
+        // Eski visible big'i bekleme pozisyonuna geri at (sıradaki slide için hazır)
+        gsap.set(visibleBig, { yPercent: 100 });
         isAActive.current = !isAActive.current;
         idxRef.current = newIdx;
         setCounter(newIdx);
         animatingRef.current = false;
       }
     });
-    
-    tl.to(hiddenBig, { yPercent: 0, duration: DURATION, ease: EASE }, 0)
-      .to(hiddenThumb, { yPercent: 0, duration: DURATION, ease: EASE }, 0)
-      .to(visibleBig, { yPercent: -100, duration: DURATION, ease: EASE }, 0)
-      .to(visibleThumb, { yPercent: -100, duration: DURATION, ease: EASE }, 0);
-      
+
+    tl.to(visibleBig, { yPercent: -100, duration: DURATION, ease: EASE }, 0);
+
   }, []);
 
   // Tıklama
@@ -103,13 +105,21 @@ export default function Hero() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [slide]);
 
+  // Tüm görselleri mount'ta preload et (cache'e al)
+  useEffect(() => {
+    heroImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   // İlk yükleme
   useEffect(() => {
     loadImage(bigAImg.current, heroImages[0]);
     loadImage(bigBImg.current, heroImages[1]);
     loadImage(thumbAImg.current, heroImages[1]);
     loadImage(thumbBImg.current, heroImages[2]);
-    
+
     gsap.set(bigA.current, { yPercent: 0 });
     gsap.set(bigB.current, { yPercent: 100 });
     gsap.set(thumbA.current, { yPercent: 0 });
@@ -119,10 +129,27 @@ export default function Hero() {
   // Text animasyonu
   const textRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    gsap.fromTo(textRef.current, 
-      { y: 60, opacity: 0 }, 
+    gsap.fromTo(textRef.current,
+      { y: 60, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.5 }
     );
+  }, []);
+
+  // SplitText hero title animation (A2)
+  const titleRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (!titleRef.current) return;
+    const split = new SplitType(titleRef.current, { types: 'chars' });
+    gsap.from(split.chars, {
+      opacity: 0,
+      y: 40,
+      rotateX: -45,
+      stagger: 0.03,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: 0.3,
+    });
+    return () => { split.revert(); };
   }, []);
 
   return (
@@ -165,7 +192,7 @@ export default function Hero() {
       {/* METİN */}
       <div className="absolute bottom-0 left-0 right-0 z-[30] p-6 md:p-10 pointer-events-none">
         <div ref={textRef} className="max-w-lg pointer-events-auto">
-          <p className="font-body text-lg md:text-xl text-white leading-relaxed drop-shadow-lg">
+          <p ref={titleRef} className="font-body text-lg md:text-xl text-white leading-relaxed drop-shadow-lg">
             {t('hero_text')}
           </p>
         </div>

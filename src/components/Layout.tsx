@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLang } from '../context/LanguageContext';
 import { Menu, X } from 'lucide-react';
+import CustomCursor from './CustomCursor';
 
 interface LayoutProps {
   children: ReactNode;
@@ -57,6 +58,7 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      <CustomCursor />
       {/* HEADER */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ${hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0'}`}>
         {/* Giant brand name */}

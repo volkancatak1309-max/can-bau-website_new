@@ -4,3 +4,11 @@ dist
 .env
 .env.local
 *.log
+.vercel
+check-*.png
+slider-*.png
+recheck-*.png
+check.mjs
+img-check.mjs
+slider-recheck.mjs
+.gitignore.patch.txt
