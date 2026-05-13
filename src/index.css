@@ -1,156 +1,292 @@
+/* ============================================
+   CAN BAU - ARCHIDOMO KOPYASI
+   Tüm değerler Archidomo kaynak kodundan çekildi
+   ============================================ */
+
+/* Google Fonts - Canela yerine en yakın alternatif */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   ARCHIDOMO CSS VARIABLES (Birebir kopya)
+   ============================================ */
 @layer base {
   :root {
-    --black: #1a1a1a;
-    --white: #ffffff;
-    --cream: #f5f0e8;
-    --gray: #888888;
-    --border-light: #e5e0d8;
+    /* Colors - Archidomo kaynak koddan */
+    --color-white: #ffffff;
+    --color-black: #0b080d;
+    --color-black-ui: #111111;
+    --color-beige: #f7f1e9;
+    --color-beige-light: #bcb5a3;
+    --color-brown: #bcb5a3;
+    --color-primary: var(--color-white);
+    --color-secondary: var(--color-black);
+    --color-highlight: var(--color-brown);
+
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Font Families */
+    --font-canela: 'Cormorant Garamond', serif;
+    --font-maison-neue: 'Inter', sans-serif;
+    --font-maison-neue-mono: 'JetBrains Mono', monospace;
+    --font-display: var(--font-maison-neue);
+
+    /* Font Sizes - rem olarak (Archidomo: 1rem = 10px) */
+    --text-13: 1.3rem;
+    --text-14: 1.4rem;
+    --text-16: 1.6rem;
+    --text-18: 1.8rem;
+    --text-20: 2rem;
+    --text-24: 2.4rem;
+    --text-36: 3.6rem;
+    --text-40: 4rem;
+    --text-48: 4.8rem;
+    --text-64: 6.4rem;
+    --text-96: 9.6rem;
+    --text-128: 12.8rem;
+
+    /* Easing Functions (GSAP ile aynı) */
+    --power1-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --power2-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --power3-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --power1-in-out: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    --power2-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --power3-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+    /* Z-index */
+    --z-index-max: 99;
+    --z-index-header: 1000;
+
+    /* Wrapper Sizes */
+    --wrapper-size-1564: 156.4rem;
+    --wrapper-size-full: 100%;
+
+    /* Legacy token mapping */
+    --black: var(--color-black);
+    --white: var(--color-white);
+    --cream: var(--color-beige);
+    --gray: var(--color-beige-light);
+    --border-light: #d4d0c9;
   }
 
+  /* ============================================
+     BASE STYLES
+     ============================================ */
   html {
+    font-size: 62.5%; /* 1rem = 10px (Archidomo ile aynı) */
     scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--white);
-    color: var(--black);
+    font-family: var(--font-maison-neue);
+    font-size: var(--text-16);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+    background-color: var(--color-beige);
+    color: var(--color-black);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background: var(--black);
-    color: var(--white);
+    background: var(--color-black);
+    color: var(--color-white);
   }
 
-  h1, h2, h3, h4 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+  /* ============================================
+     TYPOGRAPHY - Archidomo Title Classes
+     ============================================ */
+
+  /* .title-1 - Hero/Display (128px desktop, 64px mobile) */
+  .title-1 {
+    font-family: var(--font-canela);
+    font-size: var(--text-128);
+    font-weight: var(--font-weight-light);
+    line-height: 100%;
+    color: var(--color-white);
+  }
+
+  /* .title-2 - Large (96px desktop, 48px mobile) */
+  .title-2 {
+    font-family: var(--font-canela);
+    font-size: var(--text-96);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+  }
+
+  /* .title-3 - Medium (40px desktop, 24px mobile) */
+  .title-3 {
+    font-family: var(--font-canela);
+    font-size: var(--text-40);
+    font-weight: var(--font-weight-light);
+    line-height: 125%;
+  }
+
+  /* .title-4 - Small (36px desktop, 24px mobile) */
+  .title-4 {
+    font-family: var(--font-canela);
+    font-size: var(--text-36);
+    font-weight: var(--font-weight-light);
+    line-height: 1.2;
+  }
+
+  /* .txt-mono - Monospace uppercase */
+  .txt-mono {
+    font-family: var(--font-maison-neue-mono);
+    font-size: var(--text-16);
+    font-weight: var(--font-weight-normal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* .txt-1 - Body large (36px desktop, 24px mobile) */
+  .txt-1 {
+    font-size: var(--text-36);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.4;
+  }
+
+  /* .txt-2 - Body medium (20px desktop, 18px mobile) */
+  .txt-2 {
+    font-size: var(--text-20);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 }
 
+/* ============================================
+   LAYOUT - Archidomo wrapper system
+   ============================================ */
 @layer components {
-  .font-display {
-    font-family: 'Cormorant Garamond', serif;
-  }
-
-  .font-body {
-    font-family: 'Inter', sans-serif;
-  }
-
-  .font-mono {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6875rem;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .project-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
-
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    border: 1px solid var(--black);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6875rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    background: transparent;
-    color: var(--black);
-  }
-
-  .btn-outline:hover {
-    background: var(--black);
-    color: var(--white);
-  }
-
-  .divider-line {
-    width: 100%;
-    height: 1px;
-    background: var(--border-light);
-  }
-
-  .image-reveal {
-    overflow: hidden;
-  }
-
-  .image-reveal img {
-    transform: scale(1.12);
-    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .image-reveal.revealed img {
-    transform: scale(1);
-  }
-
-  .image-reveal:hover img {
-    transform: scale(1.03);
-  }
-
-  .nav-link {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8125rem;
-    font-weight: 400;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
+  .wrapper-1564 {
+    width: var(--wrapper-size-1564);
+    max-width: calc(100% - 4rem);
+    margin-inline: auto;
     position: relative;
-    z-index: 60;
-    padding: 4px 8px;
   }
 
-  .nav-link:hover {
-    opacity: 0.6;
+  .wrapper-full {
+    width: var(--wrapper-size-full);
+    max-width: calc(100% - 4rem);
+    margin-inline: auto;
+    position: relative;
   }
 
-  .nav-link .plus-icon {
-    display: inline-block;
-    transition: transform 0.3s ease;
-    font-weight: 300;
+  /* ============================================
+     ARCHIDOMO NAVIGATION
+     ============================================ */
+  .nav-item {
+    font-family: var(--font-maison-neue);
+    font-size: var(--text-20);
+    font-weight: var(--font-weight-medium);
+    line-height: 100%;
+    color: var(--header-text-color, var(--color-black));
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: opacity 0.3s;
+    cursor: pointer;
   }
 
-  .nav-link:hover .plus-icon {
+  .nav-item:hover {
+    opacity: 0.7;
+  }
+
+  .nav-item:hover .nav-label {
+    transform: translate(1rem);
+    transition: transform 0.5s var(--power3-out);
+  }
+
+  .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    flex: none;
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  /* ============================================
+     ARCHIDOMO BUTTONS
+     ============================================ */
+  .btn-primary {
+    font-family: var(--font-maison-neue);
+    font-size: var(--text-14);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1.2rem 2.4rem;
+    border: 1px solid var(--color-black);
+    background: transparent;
+    color: var(--color-black);
+    cursor: pointer;
+    transition: all 0.3s var(--power3-out);
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
+
+  /* Plus button */
+  .plus-btn {
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid var(--color-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s var(--power3-out);
+    background: transparent;
+  }
+
+  .plus-btn:hover {
+    background: var(--color-black);
     transform: rotate(90deg);
   }
 
-  /* ========== ANIMATED PROJECT LIST HOVER ========== */
+  .plus-btn:hover svg {
+    stroke: var(--color-white);
+  }
+
+  /* ============================================
+     ARCHIDOMO PROJECT LIST
+     ============================================ */
   .project-list-item {
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .project-list-item::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--black);
+    background: var(--color-black);
     transform: translateY(100%);
-    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 1.2s var(--power2-out);
     z-index: 0;
   }
 
@@ -158,150 +294,184 @@
     transform: translateY(0);
   }
 
-  .project-list-item .item-content {
+  .project-list-item:hover .project-name,
+  .project-list-item:hover .project-meta,
+  .project-list-item:hover .project-arrow {
+    color: var(--color-white);
+  }
+
+  .project-name {
+    font-family: var(--font-canela);
+    font-size: var(--text-24);
+    font-weight: var(--font-weight-light);
     position: relative;
     z-index: 1;
     transition: color 0.8s ease 0.2s;
   }
 
-  .project-list-item:hover .item-content {
-    color: white;
-  }
-
-  .project-list-item .item-meta {
+  .project-meta {
+    font-family: var(--font-maison-neue-mono);
+    font-size: var(--text-13);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     position: relative;
     z-index: 1;
     transition: color 0.8s ease 0.2s;
   }
 
-  .project-list-item:hover .item-meta {
-    color: rgba(255, 255, 255, 0.7) !important;
-  }
-
-  .project-list-item .item-arrow {
+  .project-arrow {
     position: relative;
     z-index: 1;
-    transition: all 0.8s ease 0.2s;
+    transition: color 0.8s ease 0.2s;
   }
 
-  .project-list-item:hover .item-arrow {
-    color: white !important;
-    transform: translate(2px, -2px);
+  /* ============================================
+     ARCHIDOMO HERO
+     ============================================ */
+  .hero-curtain {
+    will-change: transform;
   }
 
-  /* Direction-aware hover exit animation */
-  .project-list-item.direction-up::before {
-    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* ============================================
+     ARCHIDOMO FOOTER
+     ============================================ */
+  .footer-giant {
+    font-family: var(--font-canela);
+    font-size: clamp(7.2rem, 15vw, 28rem);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-black);
+    width: 100%;
   }
 
-  .project-list-item.direction-down::before {
-    animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  .footer-baumeister {
+    font-family: var(--font-maison-neue-mono);
+    font-size: var(--text-14);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--color-black);
+    text-align: center;
   }
 
-  @keyframes slideUp {
-    from { transform: translateY(0); }
-    to { transform: translateY(-100%); }
+  /* ============================================
+     ARCHIDOMO GALLERY
+     ============================================ */
+  .horizontal-gallery {
+    display: flex;
+    gap: 1.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2rem;
   }
 
-  @keyframes slideDown {
-    from { transform: translateY(0); }
-    to { transform: translateY(100%); }
-  }
-}
-
-/* Lenis */
-html.lenis {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 2px;
-}
-
-/* SplitText (A2) */
-.char {
-  display: inline-block;
-  transform-origin: bottom;
-}
-
-/* CUSTOM CURSOR (A3) */
-@media (hover: hover) and (pointer: fine) {
-  *, *::before, *::after { cursor: none !important; }
-}
-
-.custom-cursor-outer,
-.custom-cursor-inner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  will-change: transform;
-  mix-blend-mode: difference;
-}
-
-.custom-cursor-outer {
-  width: 32px;
-  height: 32px;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  transition: width 0.25s ease, height 0.25s ease, background-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-cursor-outer.cursor-hover {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-.custom-cursor-outer.cursor-view {
-  width: 90px;
-  height: 90px;
-  background-color: #fff;
-  border-color: #fff;
-}
-
-.cursor-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: #000;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.custom-cursor-outer.cursor-view .cursor-label {
-  opacity: 1;
-}
-
-.custom-cursor-inner {
-  width: 6px;
-  height: 6px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-
-@media (hover: none), (pointer: coarse) {
-  .custom-cursor-outer,
-  .custom-cursor-inner {
+  .horizontal-gallery::-webkit-scrollbar {
     display: none;
+  }
+
+  .gallery-item {
+    flex: none;
+    scroll-snap-align: start;
+    width: clamp(26rem, 32vw, 48rem);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--power3-out);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* ============================================
+     STATEMENT TEXT (Monospace uppercase)
+     ============================================ */
+  .statement-text {
+    font-family: var(--font-maison-neue-mono);
+    font-size: var(--text-13);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     ARCHIDOMO SECTION LABEL
+     ============================================ */
+  .section-label {
+    font-family: var(--font-maison-neue-mono);
+    font-size: var(--text-13);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-beige-light);
+  }
+
+  /* ============================================
+     ARCHIDOMO HEADER (mix-blend-mode)
+     ============================================ */
+  .header-blend {
+    mix-blend-mode: difference;
+    --header-text-color: var(--color-white);
+    --header-divider-color: var(--color-white);
+  }
+
+  .header-light {
+    --header-text-color: var(--color-white);
+    --header-button-bg: var(--color-white);
+    --header-button-text: var(--color-black-ui);
+    --header-divider-color: var(--color-white);
+  }
+
+  .header-dark {
+    --header-text-color: var(--color-black-ui);
+    --header-button-bg: var(--color-black-ui);
+    --header-button-text: var(--color-white);
+    --header-divider-color: var(--color-black-ui);
+  }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE - Archidomo portrait
+   ============================================ */
+@media (orientation: portrait) {
+  .title-1 {
+    font-size: var(--text-64) !important;
+  }
+
+  .title-2 {
+    font-size: var(--text-48) !important;
+  }
+
+  .title-3 {
+    font-size: var(--text-24) !important;
+  }
+
+  .txt-1 {
+    font-size: var(--text-24) !important;
+  }
+
+  .nav-item {
+    font-size: var(--text-18);
+  }
+}
+
+/* ============================================
+   CUSTOM CURSOR (Mevcut özellik korundu)
+   ============================================ */
+@layer components {
+  .cursor-custom {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    mix-blend-mode: difference;
   }
 }

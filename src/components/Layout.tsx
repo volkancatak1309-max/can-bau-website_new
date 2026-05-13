@@ -17,10 +17,9 @@ export default function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isHome = location.pathname === '/' || location.hash === '#/' || location.pathname === '';
-  
-  const navTextColor = scrolled || !isHome || mobileOpen ? 'text-[#1a1a1a]' : 'text-white';
-  const borderColor = scrolled || !isHome || mobileOpen ? 'border-[#e5e0d8]' : 'border-white/20';
-  const bgColor = scrolled || !isHome || mobileOpen ? 'bg-white' : 'bg-transparent';
+
+  // Archidomo: header colors based on blend mode
+  const headerBlend = isHome && !scrolled ? 'header-blend' : 'header-dark';
 
   useEffect(() => {
     const onScroll = () => {
@@ -37,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
     setMobileOpen(false);
   }, [location]);
 
-  // Nav item'lar - HREF kullan (düz HTML link)
+  // Nav items - Archidomo style
   const leftNav = [
     { label: t('nav_agency'), href: '/agence' },
     { label: t('nav_projects'), href: '/realisations' },
@@ -57,60 +56,96 @@ export default function Layout({ children }: LayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-beige)' }}>
       <CustomCursor />
-      {/* HEADER */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ${hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0'}`}>
-        {/* Giant brand name */}
-        <div className={`px-4 md:px-6 pt-2 pb-0 transition-colors duration-300 ${bgColor}`}>
+
+      {/* HEADER - Archidomo style */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ${hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0'} ${headerBlend}`}>
+        {/* Giant brand name - Archidomo logo style */}
+        <div className="px-4 md:px-8 pt-4 pb-0">
           <a href="#/" className="block text-left no-underline" onClick={() => window.scrollTo(0, 0)}>
-            <h1 className="font-display leading-[0.85] tracking-[-0.02em] text-white mix-blend-difference" style={{ fontSize: 'clamp(60px, 13vw, 180px)' }}>
+            <h1 className="font-display leading-[0.85] tracking-[-0.02em]" style={{
+              fontSize: 'clamp(6rem, 13vw, 18rem)',
+              fontFamily: 'var(--font-canela)',
+              fontWeight: 'var(--font-weight-light)',
+              color: 'var(--color-white)',
+              mixBlendMode: 'difference',
+            }}>
               CAN BAU
             </h1>
           </a>
         </div>
 
-        {/* Navigation */}
-        <nav className={`px-4 md:px-6 py-2 flex items-center justify-between border-t transition-all duration-300 ${borderColor} ${bgColor}`}>
-          <div className="hidden md:flex items-center gap-6">
+        {/* Navigation - Archidomo nav style */}
+        <nav className="px-4 md:px-8 py-4 flex items-center justify-between">
+          {/* Divider line */}
+          <div className="absolute top-0 left-0 right-0 h-px opacity-20" style={{ backgroundColor: 'var(--header-divider-color, var(--color-black))' }} />
+
+          {/* Left nav */}
+          <div className="hidden md:flex items-center" style={{ gap: '12rem' }}>
             {leftNav.map((item) => (
-              <a 
-                key={item.href} 
-                href={`#${item.href}`} 
-                className={`nav-link ${navTextColor} transition-colors duration-300 no-underline`}
+              <a
+                key={item.href}
+                href={`#${item.href}`}
+                className="nav-item"
                 onClick={() => window.scrollTo(0, 0)}
               >
-                <span className="plus-icon">+</span>
-                <span>{item.label}</span>
+                <span className="nav-icon">
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1">
+                    <line x1="6.5" y1="0" x2="6.5" y2="13" />
+                    <line x1="0" y1="6.5" x2="13" y2="6.5" />
+                  </svg>
+                </span>
+                <span className="nav-label">{item.label}</span>
               </a>
             ))}
           </div>
 
-          <div className="flex items-center gap-4 md:gap-8">
-            <div className="hidden md:flex items-center gap-6">
+          {/* Right nav */}
+          <div className="flex items-center" style={{ gap: '12rem' }}>
+            <div className="hidden md:flex items-center" style={{ gap: '12rem' }}>
               {rightNav.map((item) => (
-                <a 
-                  key={item.label} 
-                  href={item.href === '#' ? '#' : `#${item.href}`} 
-                  className={`nav-link ${navTextColor} transition-colors duration-300 no-underline`}
+                <a
+                  key={item.label}
+                  href={item.href === '#' ? '#' : `#${item.href}`}
+                  className="nav-item"
                 >
-                  <span className="plus-icon">+</span>
-                  <span>{item.label}</span>
+                  <span className="nav-icon">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1">
+                      <line x1="6.5" y1="0" x2="6.5" y2="13" />
+                      <line x1="0" y1="6.5" x2="13" y2="6.5" />
+                    </svg>
+                  </span>
+                  <span className="nav-label">{item.label}</span>
                 </a>
               ))}
             </div>
+
+            {/* Language switcher */}
             <div className="hidden md:flex items-center gap-2">
               {languages.map((l) => (
-                <button 
-                  key={l.code} 
-                  onClick={() => setLang(l.code)} 
-                  className={`font-mono text-xs transition-colors bg-transparent border-none ${lang === l.code ? (scrolled || !isHome ? 'text-[#1a1a1a] font-medium' : 'text-white font-medium') : (scrolled || !isHome ? 'text-[#aaa] hover:text-[#666]' : 'text-white/50 hover:text-white/80')}`}
+                <button
+                  key={l.code}
+                  onClick={() => setLang(l.code)}
+                  className="transition-colors bg-transparent border-none cursor-pointer"
+                  style={{
+                    fontFamily: 'var(--font-maison-neue-mono)',
+                    fontSize: 'var(--text-13)',
+                    color: lang === l.code ? 'var(--header-text-color)' : 'var(--header-text-color)',
+                    opacity: lang === l.code ? 1 : 0.5,
+                  }}
                 >
                   {l.label}
                 </button>
               ))}
             </div>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className={`md:hidden p-2 transition-colors bg-transparent border-none ${navTextColor}`}>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 transition-colors bg-transparent border-none"
+              style={{ color: 'var(--header-text-color)' }}
+            >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -119,71 +154,222 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 top-[80px] bg-white z-40 px-6 py-8">
+        <div className="md:hidden fixed inset-0 top-[80px] z-40 px-6 py-8" style={{ backgroundColor: 'var(--color-beige)' }}>
           <nav className="flex flex-col gap-6">
             {[...leftNav, ...rightNav].map((item) => (
-              <a 
-                key={item.href} 
-                href={item.href === '#' ? '#' : `#${item.href}`} 
-                className="font-display text-3xl text-[#1a1a1a] hover:text-[#C8A45C] transition-colors no-underline"
+              <a
+                key={item.href}
+                href={item.href === '#' ? '#' : `#${item.href}`}
+                className="no-underline"
+                style={{
+                  fontFamily: 'var(--font-canela)',
+                  fontSize: 'var(--text-36)',
+                  fontWeight: 'var(--font-weight-medium)',
+                  lineHeight: '100%',
+                  color: 'var(--color-black)',
+                }}
               >
                 {item.label}
               </a>
             ))}
           </nav>
-          <div className="mt-8 pt-8 border-t border-[#e5e0d8] flex gap-4">
-            {languages.map((l) => (
-              <button key={l.code} onClick={() => setLang(l.code)} className={`font-mono text-sm bg-transparent border-none ${lang === l.code ? 'text-[#1a1a1a] font-medium' : 'text-[#aaa]'}`}>
-                {l.label}
-              </button>
-            ))}
-          </div>
         </div>
       )}
 
-      <div className="h-[calc(13vw+50px)]" style={{ minHeight: '120px' }} />
+      {/* Spacer for fixed header */}
+      <div className="h-[calc(13vw+80px)]" style={{ minHeight: '140px' }} />
 
       <main>{children}</main>
 
-      {/* FOOTER */}
-      <footer className="py-16 md:py-24 border-t border-[#e5e0d8]">
-        <div className="px-6 md:px-10">
-          <div className="mb-16">
-            <h2 className="font-display text-[8vw] md:text-[6vw] leading-[0.9] text-[#1a1a1a] tracking-[-0.02em]">CAN BAU GMBH</h2>
-            <p className="font-display text-[3vw] md:text-[2vw] text-[#888] italic mt-2 leading-none">Hochbau · Tiefbau · Abbruch</p>
-          </div>
+      {/* FOOTER - Archidomo style */}
+      <footer style={{ backgroundColor: 'var(--color-beige)' }}>
+        {/* Giant logo */}
+        <div className="px-4 md:px-8 pt-16 pb-8">
+          <h2 className="footer-giant" style={{
+            fontFamily: 'var(--font-canela)',
+            fontSize: 'clamp(7.2rem, 15vw, 28rem)',
+            fontWeight: 'var(--font-weight-light)',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            color: 'var(--color-black)',
+          }}>
+            CAN BAU
+          </h2>
+          <p className="footer-baumeister" style={{
+            fontFamily: 'var(--font-maison-neue-mono)',
+            fontSize: 'var(--text-14)',
+            letterSpacing: '0.5em',
+            textTransform: 'uppercase',
+            color: 'var(--color-black)',
+            textAlign: 'center',
+            marginTop: '1rem',
+          }}>
+            BAUMEISTER
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-12">
+        {/* 4-column layout */}
+        <div className="px-4 md:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+            {/* Column 1: Navigation */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">Navigation</h4>
-              <nav className="flex flex-col gap-2">
+              <button className="plus-btn mb-6">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1">
+                  <line x1="6.5" y1="0" x2="6.5" y2="13" />
+                  <line x1="0" y1="6.5" x2="13" y2="6.5" />
+                </svg>
+              </button>
+              <nav className="flex flex-col gap-3">
                 {leftNav.map((item) => (
-                  <a key={item.href} href={`#${item.href}`} className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors no-underline w-fit">
+                  <a
+                    key={item.href}
+                    href={`#${item.href}`}
+                    className="no-underline transition-opacity hover:opacity-70"
+                    style={{
+                      fontFamily: 'var(--font-maison-neue)',
+                      fontSize: 'var(--text-18)',
+                      color: 'var(--color-black)',
+                    }}
+                  >
                     {item.label}
                   </a>
                 ))}
               </nav>
             </div>
 
+            {/* Column 2: Contact + Socials */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">{t('contact_title')}</h4>
-              <div className="flex flex-col gap-1">
-                <p className="font-body text-sm text-[#444]">Radetzkystraße 66<br />6845 Hohenems<br />Österreich</p>
-                <a href="tel:+435576755450" className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors mt-2">+43 (0) 5576 755 450</a>
-                <a href="mailto:info@canbau.at" className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors">info@canbau.at</a>
+              <h4 className="mb-4" style={{
+                fontFamily: 'var(--font-maison-neue)',
+                fontSize: 'var(--text-18)',
+                color: 'var(--color-black)',
+              }}>
+                {t('contact_title')}
+              </h4>
+              <div className="flex flex-col gap-1 mb-6">
+                <a href="tel:+435576755450" className="no-underline transition-opacity hover:opacity-70" style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                }}>
+                  +43 (0) 5576 755 450
+                </a>
+                <a href="mailto:info@canbau.at" className="no-underline transition-opacity hover:opacity-70" style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                }}>
+                  info@canbau.at
+                </a>
+              </div>
+
+              <h4 className="mb-4" style={{
+                fontFamily: 'var(--font-maison-neue)',
+                fontSize: 'var(--text-18)',
+                color: 'var(--color-black)',
+              }}>
+                Socials
+              </h4>
+              <div className="flex flex-col gap-2">
+                <a href="#" className="no-underline transition-opacity hover:opacity-70 flex items-center gap-2" style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                }}>
+                  <span>+</span> INSTAGRAM
+                </a>
+                <a href="#" className="no-underline transition-opacity hover:opacity-70 flex items-center gap-2" style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                }}>
+                  <span>+</span> LINKEDIN
+                </a>
               </div>
             </div>
 
+            {/* Column 3: Showroom (Hohenems) */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">{t('footer_rights')}</h4>
+              <h4 className="mb-4" style={{
+                fontFamily: 'var(--font-maison-neue)',
+                fontSize: 'var(--text-18)',
+                color: 'var(--color-black)',
+              }}>
+                Hohenems – Showroom
+              </h4>
               <div className="flex flex-col gap-1">
-                <span className="font-body text-sm text-[#888]">© {new Date().getFullYear()} CAN BAU GmbH</span>
-                <div className="flex items-center gap-4 mt-2">
-                  <a href="#" className="font-body text-xs text-[#aaa] hover:text-[#666]">Impressum</a>
-                  <a href="#" className="font-body text-xs text-[#aaa] hover:text-[#666]">Datenschutz</a>
-                </div>
+                <p style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                  lineHeight: 1.6,
+                }}>
+                  Radetzkystraße 66<br />
+                  6845 Hohenems<br />
+                  Österreich
+                </p>
               </div>
             </div>
+
+            {/* Column 4: Werkstatt (Dornbirn) */}
+            <div>
+              <h4 className="mb-4" style={{
+                fontFamily: 'var(--font-maison-neue)',
+                fontSize: 'var(--text-18)',
+                color: 'var(--color-black)',
+              }}>
+                Dornbirn – Werkstatt
+              </h4>
+              <div className="flex flex-col gap-1">
+                <p style={{
+                  fontFamily: 'var(--font-maison-neue-mono)',
+                  fontSize: 'var(--text-13)',
+                  color: 'var(--color-black)',
+                  textTransform: 'uppercase',
+                  lineHeight: 1.6,
+                }}>
+                  Bachmähdamm 6<br />
+                  6850 Dornbirn<br />
+                  Österreich
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="px-4 md:px-8 py-4 flex items-center justify-between" style={{ borderTop: '1px solid var(--border-light)' }}>
+          <span style={{
+            fontFamily: 'var(--font-maison-neue-mono)',
+            fontSize: 'var(--text-13)',
+            color: 'var(--color-beige-light)',
+            textTransform: 'uppercase',
+          }}>
+            © {new Date().getFullYear()} CAN BAU GmbH
+          </span>
+          <div className="flex items-center gap-4">
+            <a href="#" className="no-underline transition-opacity hover:opacity-70" style={{
+              fontFamily: 'var(--font-maison-neue-mono)',
+              fontSize: 'var(--text-13)',
+              color: 'var(--color-beige-light)',
+              textTransform: 'uppercase',
+            }}>
+              LEGALS
+            </a>
+            <span style={{ color: 'var(--color-beige-light)' }}>|</span>
+            <a href="#" className="no-underline transition-opacity hover:opacity-70" style={{
+              fontFamily: 'var(--font-maison-neue-mono)',
+              fontSize: 'var(--text-13)',
+              color: 'var(--color-beige-light)',
+              textTransform: 'uppercase',
+            }}>
+              PRIVACY POLICY
+            </a>
           </div>
         </div>
       </footer>
