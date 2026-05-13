@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLang } from '../context/LanguageContext';
 import { ArrowUpRight } from 'lucide-react';
 import Hero from '../sections/Hero';
+import OurAgency from '../sections/OurAgency';
+import Inspiration from '../sections/Inspiration';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,6 +68,9 @@ export default function Home() {
       {/* ===== HERO WITH SLIDESHOW ===== */}
       <Hero />
 
+      {/* ===== OUR AGENCY (Archidomo intro block) ===== */}
+      <OurAgency />
+
       {/* ===== SKETCH vs REALITY ===== */}
       <section className="py-24 md:py-32 bg-white">
         <div className="px-6 md:px-10">
@@ -87,7 +92,7 @@ export default function Home() {
       </section>
 
       {/* ===== FEATURED PROJECTS ===== */}
-      <section className="py-20 md:py-28" style={{ backgroundColor: '#F5F0E8' }}>
+      <section className="py-20 md:py-28" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="px-6 md:px-10">
           <div className="reveal-up mb-16">
             <span className="section-label text-[#888] mb-3 block">{t('projects_title')}</span>
@@ -154,8 +159,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== INSPIRATION / LA VISION (Archidomo big-statement + galleries) ===== */}
+      <Inspiration />
+
       {/* ===== STATS ===== */}
-      <section className="py-20 md:py-28" style={{ backgroundColor: '#F5F0E8' }}>
+      <section className="py-20 md:py-28" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="px-6 md:px-10">
           <div className="reveal-up grid grid-cols-2 md:grid-cols-4 gap-12">
             {[{ num: '25+', label: 'Jahre Erfahrung' }, { num: '480+', label: 'Projekte realisiert' }, { num: '65', label: 'Mitarbeiter' }, { num: '100%', label: 'Zufriedenheit' }].map((s) => (
@@ -176,7 +184,7 @@ export default function Home() {
       </section>
 
       {/* ===== PARTNERS ===== */}
-      <section className="py-20 md:py-28" style={{ backgroundColor: '#F5F0E8' }}>
+      <section className="py-20 md:py-28" style={{ backgroundColor: 'var(--cream)' }}>
         <div className="px-6 md:px-10">
           <div className="reveal-up mb-12">
             <span className="section-label text-[#888] mb-3 block">{t('partner_title')}</span>

@@ -51,6 +51,12 @@ const translations: Record<Lang, Translations> = {
     sunday: 'Sonntag',
     closed: 'Geschlossen',
     read_more: 'Weiterlesen',
+    inspiration_label: 'Inspiration',
+    inspiration_caption: 'Eine Gelegenheit eines Ortes in ein Lebenserlebnis zu verwandeln, wie kein anderes.',
+    inspiration_btn: 'Mehr erfahren',
+    inspiration_statement: 'Inspiration und Realität, fein verwoben.',
+    gallery_architecture: 'Architektur',
+    gallery_outdoor: 'Pools & Außenräume',
   },
   en: {
     nav_agency: 'Agency',
@@ -96,6 +102,12 @@ const translations: Record<Lang, Translations> = {
     sunday: 'Sunday',
     closed: 'Closed',
     read_more: 'Read more',
+    inspiration_label: 'Inspiration',
+    inspiration_caption: 'To turn the opportunity of a place into a living experience unlike any other.',
+    inspiration_btn: 'Discover more',
+    inspiration_statement: 'Inspiration and reality, finely woven.',
+    gallery_architecture: 'Architecture',
+    gallery_outdoor: 'Pools & Outdoor Spaces',
   },
   tr: {
     nav_agency: 'Şirket',
@@ -141,6 +153,12 @@ const translations: Record<Lang, Translations> = {
     sunday: 'Pazar',
     closed: 'Kapalı',
     read_more: 'Devamını oku',
+    inspiration_label: 'İlham',
+    inspiration_caption: 'Bir yerin fırsatını, başka hiçbir şeye benzemeyen bir yaşam deneyimine dönüştürmek.',
+    inspiration_btn: 'Daha fazlası',
+    inspiration_statement: 'İlham ve gerçeklik, incelikle örülmüş.',
+    gallery_architecture: 'Mimari',
+    gallery_outdoor: 'Havuzlar & Dış Mekanlar',
   },
 };
 

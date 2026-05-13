@@ -145,44 +145,94 @@ export default function Layout({ children }: LayoutProps) {
 
       <main>{children}</main>
 
-      {/* FOOTER */}
-      <footer className="py-16 md:py-24 border-t border-[#e5e0d8]">
-        <div className="px-6 md:px-10">
-          <div className="mb-16">
-            <h2 className="font-display text-[8vw] md:text-[6vw] leading-[0.9] text-[#1a1a1a] tracking-[-0.02em]">CAN BAU GMBH</h2>
-            <p className="font-display text-[3vw] md:text-[2vw] text-[#888] italic mt-2 leading-none">Hochbau · Tiefbau · Abbruch</p>
-          </div>
+      {/* FOOTER — Archidomo-style: full-bleed wordmark + 4 columns */}
+      <footer className="pt-20 md:pt-28 pb-10 border-t" style={{ borderColor: 'var(--border-light)', backgroundColor: 'var(--cream)' }}>
+        {/* Giant wordmark + BAUMEISTER tagline */}
+        <div className="px-4 md:px-6 mb-20 md:mb-28">
+          <span className="footer-giant block">CAN BAU</span>
+          <span className="footer-baumeister mt-3 block">B A U M E I S T E R</span>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-12">
+        {/* 4-column grid */}
+        <div className="px-6 md:px-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8 mb-16">
+            {/* Column 1: Navigation with + buttons */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">Navigation</h4>
+              <button className="plus-btn mb-6" aria-hidden="true">+</button>
+              <h4 className="section-label mb-5" style={{ color: 'var(--text-secondary)' }}>{t('nav_agency')}</h4>
               <nav className="flex flex-col gap-2">
                 {leftNav.map((item) => (
-                  <a key={item.href} href={`#${item.href}`} className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors no-underline w-fit">
+                  <a
+                    key={item.href}
+                    href={`#${item.href}`}
+                    className="font-body text-sm hover:opacity-60 transition-opacity no-underline w-fit"
+                    style={{ color: 'var(--black)' }}
+                    onClick={() => window.scrollTo(0, 0)}
+                  >
                     {item.label}
                   </a>
                 ))}
               </nav>
             </div>
 
+            {/* Column 2: Contact + Socials */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">{t('contact_title')}</h4>
+              <h4 className="section-label mb-5" style={{ color: 'var(--text-secondary)' }}>{t('contact_title')}</h4>
+              <div className="flex flex-col gap-1 mb-6">
+                <a href="tel:+435576755450" className="font-body text-sm hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--black)' }}>
+                  +43 (0) 5576 755 450
+                </a>
+                <a href="mailto:info@canbau.at" className="font-body text-sm hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--black)' }}>
+                  info@canbau.at
+                </a>
+              </div>
+              <h4 className="section-label mb-3" style={{ color: 'var(--text-secondary)' }}>{t('nav_socials')}</h4>
               <div className="flex flex-col gap-1">
-                <p className="font-body text-sm text-[#444]">Radetzkystraße 66<br />6845 Hohenems<br />Österreich</p>
-                <a href="tel:+435576755450" className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors mt-2">+43 (0) 5576 755 450</a>
-                <a href="mailto:info@canbau.at" className="font-body text-sm text-[#444] hover:text-[#1a1a1a] transition-colors">info@canbau.at</a>
+                <a href="#" className="font-body text-sm hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--black)' }}>Instagram</a>
+                <a href="#" className="font-body text-sm hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--black)' }}>LinkedIn</a>
               </div>
             </div>
 
+            {/* Column 3: Showroom / HQ */}
             <div>
-              <h4 className="section-label text-[#aaa] mb-4">{t('footer_rights')}</h4>
-              <div className="flex flex-col gap-1">
-                <span className="font-body text-sm text-[#888]">© {new Date().getFullYear()} CAN BAU GmbH</span>
-                <div className="flex items-center gap-4 mt-2">
-                  <a href="#" className="font-body text-xs text-[#aaa] hover:text-[#666]">Impressum</a>
-                  <a href="#" className="font-body text-xs text-[#aaa] hover:text-[#666]">Datenschutz</a>
-                </div>
-              </div>
+              <h4 className="section-label mb-5" style={{ color: 'var(--text-secondary)' }}>Showroom</h4>
+              <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--black)' }}>
+                Radetzkystraße 66<br />
+                6845 Hohenems<br />
+                Österreich
+              </p>
+              <p className="font-mono text-xs mt-4" style={{ color: 'var(--text-secondary)' }}>
+                Mo – Fr · 08:00 – 17:00
+              </p>
+            </div>
+
+            {/* Column 4: Second location */}
+            <div>
+              <h4 className="section-label mb-5" style={{ color: 'var(--text-secondary)' }}>Werkstatt</h4>
+              <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--black)' }}>
+                Industriestraße 12<br />
+                6850 Dornbirn<br />
+                Vorarlberg
+              </p>
+              <p className="font-mono text-xs mt-4" style={{ color: 'var(--text-secondary)' }}>
+                Termin nach Vereinbarung
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom bar: © + LEGALS | PRIVACY POLICY */}
+          <div className="pt-6 border-t flex flex-col md:flex-row items-start md:items-center justify-between gap-3" style={{ borderColor: 'var(--border-light)' }}>
+            <p className="font-mono text-[0.625rem] uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>
+              © {new Date().getFullYear()} CAN BAU GmbH — {t('footer_rights')}
+            </p>
+            <div className="flex items-center gap-6">
+              <a href="#" className="font-mono text-[0.625rem] uppercase tracking-wider hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--text-secondary)' }}>
+                Legals
+              </a>
+              <span className="font-mono text-[0.625rem]" style={{ color: 'var(--border-light)' }}>|</span>
+              <a href="#" className="font-mono text-[0.625rem] uppercase tracking-wider hover:opacity-60 transition-opacity no-underline" style={{ color: 'var(--text-secondary)' }}>
+                Privacy Policy
+              </a>
             </div>
           </div>
         </div>
