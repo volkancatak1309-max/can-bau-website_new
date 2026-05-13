@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLang } from '../context/LanguageContext';
 import { ArrowUpRight } from 'lucide-react';
 import Hero from '../sections/Hero';
+import OurAgency from '../sections/OurAgency';
+import Inspiration from '../sections/Inspiration';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,6 +67,9 @@ export default function Home() {
     <div>
       {/* ===== HERO WITH SLIDESHOW ===== */}
       <Hero />
+
+      {/* ===== OUR AGENCY ===== */}
+      <OurAgency />
 
       {/* ===== SKETCH vs REALITY ===== */}
       <section className="py-24 md:py-32 bg-white">
@@ -153,6 +158,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ===== INSPIRATION ===== */}
+      <Inspiration />
 
       {/* ===== STATS ===== */}
       <section className="py-20 md:py-28" style={{ backgroundColor: '#F5F0E8' }}>
